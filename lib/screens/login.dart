@@ -179,6 +179,7 @@ class _LoginState extends State<Login> {
         ToastComponent.showDialog(loginResponse.message, context,
             gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
         AuthHelper().setUserData(loginResponse);
+
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return Main();
         }));

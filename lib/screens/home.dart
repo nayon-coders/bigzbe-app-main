@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:active_ecommerce_flutter/custom/CommonFunctoins.dart';
 import 'package:active_ecommerce_flutter/helpers/addons_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/business_setting_helper.dart';
@@ -24,7 +26,7 @@ import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
 import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import 'package:http/http.dart' as http;
 import 'bigzloot.dart';
 
 
@@ -67,6 +69,21 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   int _totalProductData = 0;
   int _productPage = 1;
   bool _showProductLoadingContainer = false;
+  List items = [];
+  Future Slider;
+  List SliderItems = [];
+  getSliderData() async{
+    final response = await http.get(Uri.parse("https://bigzbe.com/api/v2/bzslider"));
+    var data = jsonDecode(response.body.toString());
+    if(response.statusCode == 200){
+      for(Map i in data){
+        items.add(i["image"]);
+      }
+      return items;
+    }else{
+      return items;
+    }
+  }
 
   @override
   void initState() {
@@ -74,7 +91,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     print("app_language.${app_language.$}");
     print("app_language_rtl${app_language_rtl.$}");
 
-
+    Slider = getSliderData();
     // TODO: implement initState
     super.initState();
     // In initState()
@@ -272,15 +289,122 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                             ),
                             child: buildHomeCarouselSlider(context),
                           ),
+
+
                           Padding(
                             padding: const EdgeInsets.fromLTRB(
                               8.0,
-                              16.0,
+                              20.0,
                               8.0,
-                              0.0,
+                              20.0,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                      return TodaysDealProducts();
+                                    }));
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(5),
+                                    height: 130,
+                                    width: MediaQuery.of(context).size.width / 2.2,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.white,
+                                      //shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Colors.grey.shade200,
+                                              spreadRadius: 2,
+                                              blurRadius: 10,
+                                            offset: Offset(0,2)
+                                          )
+                                        ],
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Image.asset("assets/todays_deal.png", height: 50, width: 50, fit: BoxFit.contain,),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 8),
+                                          child: Text(
+                                            //AppLocalizations.of(context).home_screen_top_categories,
+                                            AppLocalizations.of(context).home_screen_todays_deal,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                                color: Color.fromRGBO(132, 132, 132, 1),
+                                                fontWeight: FontWeight.w300),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                      return FlashDealList();
+                                    }));
+                                  },
+                                  child: Container(
+                                    height: 130,
+                                    width: MediaQuery.of(context).size.width / 2.2,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.white,
+                                      //shape: BoxShape.circle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Colors.grey.shade200,
+                                            spreadRadius: 2,
+                                            blurRadius: 10,
+                                            offset: Offset(0,2)
+                                        )
+                                      ],
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Image.asset("assets/flash_deal.png", height: 50, width: 50, fit: BoxFit.contain,),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 8),
+                                          child: Text(
+                                            //AppLocalizations.of(context).home_screen_top_categories,
+                                            AppLocalizations.of(context).home_screen_flash_deal,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                                color: Color.fromRGBO(132, 132, 132, 1),
+                                                fontWeight: FontWeight.w300),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          buildSlider(),
+
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                              8.0,
+                              20.0,
+                              8.0,
+                              20.0,
                             ),
                             child: buildHomeMenuRow(context),
                           ),
+
                         ]),
                       ),
                       SliverList(
@@ -783,18 +907,19 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             child: Container(
              padding: EdgeInsets.all(10),
               height: 130,
-              width: MediaQuery.of(context).size.width / 4.3,
+              width: MediaQuery.of(context).size.width / 4.4,
               decoration: BoxDecoration(
-                  //shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.white,
-                          spreadRadius: 2,
-                          blurRadius: 10
-                      )
-                    ],
-                    border:
-                    Border.all(color: MyTheme.light_grey, width: 1)),
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+                //shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.shade200,
+                      spreadRadius: 2,
+                      blurRadius: 10,
+                      offset: Offset(0,2)
+                  )
+                ],),
               child: Column( 
                 children: [
                     Padding(
@@ -827,18 +952,19 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             child: Container(
               padding: EdgeInsets.all(5),
               height: 130,
-              width: MediaQuery.of(context).size.width / 4.3,
+              width: MediaQuery.of(context).size.width / 4.4,
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
                 //shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.white,
-                        spreadRadius: 2,
-                        blurRadius: 10
-                    )
-                  ],
-                  border:
-                  Border.all(color: MyTheme.light_grey, width: 1)),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.shade200,
+                      spreadRadius: 2,
+                      blurRadius: 10,
+                      offset: Offset(0,2)
+                  )
+                ],),
               child: Column(
                 children: [
                   Padding(
@@ -871,18 +997,19 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             child: Container(
               padding: EdgeInsets.all(10),
               height: 130,
-              width: MediaQuery.of(context).size.width / 4.2,
+              width: MediaQuery.of(context).size.width / 4.4,
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
                 //shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.white,
-                        spreadRadius: 2,
-                        blurRadius: 10
-                    )
-                  ],
-                  border:
-                  Border.all(color: MyTheme.light_grey, width: 1)),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.shade200,
+                      spreadRadius: 2,
+                      blurRadius: 10,
+                      offset: Offset(0,2)
+                  )
+                ],),
               child: Column(
                 children: [
                   Padding(
@@ -914,18 +1041,19 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             child: Container(
               height: 130,
               padding: EdgeInsets.all(10),
-              width: MediaQuery.of(context).size.width / 4.3,
+              width: MediaQuery.of(context).size.width / 4.4,
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
                 //shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.white,
-                        spreadRadius: 2,
-                        blurRadius: 10
-                    )
-                  ],
-                  border:
-                  Border.all(color: MyTheme.light_grey, width: 1)),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.shade200,
+                      spreadRadius: 2,
+                      blurRadius: 10,
+                      offset: Offset(0,2)
+                  )
+                ],),
               child: Column(
                 children: [
                   Padding(
@@ -1166,6 +1294,82 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             ? AppLocalizations.of(context).common_no_more_products
             : AppLocalizations.of(context).common_loading_more_products),
       ),
+    );
+  }
+
+  FutureBuilder<dynamic> buildSlider() {
+    return FutureBuilder(
+        future: Slider,
+        builder: (context, AsyncSnapshot<dynamic> snapshot){
+          if(snapshot.hasData){
+            return CarouselSlider.builder(
+              itemCount: items.length,
+              options: CarouselOptions(
+                height: 150,
+                aspectRatio: 16/9,
+                viewportFraction: 0.8,
+                autoPlay: true,
+                enlargeCenterPage: true,
+                initialPage: 0,
+                enableInfiniteScroll:true,
+                reverse: false,
+                autoPlayInterval: Duration(seconds: 5),
+                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                autoPlayCurve: Curves.fastOutSlowIn,
+                scrollDirection: Axis.horizontal,
+              ),
+              itemBuilder: (context, index, realIdx) {
+                return  Container(
+                  height: 120,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      image: DecorationImage(
+                          image: NetworkImage("https://bigzbe.com/public/uploads/bzslider/${items[index]}"),
+                          fit: BoxFit.cover
+                      )
+                  ),
+
+                );
+              },
+            );
+          }else if(snapshot.connectionState == ConnectionState.waiting){
+            return CarouselSlider.builder(
+              itemCount: 3,
+              options: CarouselOptions(
+                height: 150,
+                aspectRatio: 16/9,
+                viewportFraction: 0.8,
+                autoPlay: true,
+                enlargeCenterPage: true,
+                initialPage: 0,
+                enableInfiniteScroll:true,
+                reverse: false,
+                autoPlayInterval: Duration(seconds: 5),
+                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                autoPlayCurve: Curves.fastOutSlowIn,
+                scrollDirection: Axis.horizontal,
+              ),
+              itemBuilder: (context, index, realIdx) {
+                return  Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      image: DecorationImage(
+                        image: AssetImage("assets/Loading.gif"),
+
+                      )
+                  ),
+
+                );
+              },
+            );
+
+          }else{
+            return Center(child: Text("Something went warning"),);
+          }
+
+        }
     );
   }
 }
