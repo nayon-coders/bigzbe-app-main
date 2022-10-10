@@ -668,24 +668,27 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   buildHomeFeaturedCategories(context) {
     if (_isCategoryInitial && _featuredCategoryList.length == 0) {
-      return Row(
-        children: [
-          Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: ShimmerHelper().buildBasicShimmer(
-                  height: 120.0,
-                  width: (MediaQuery.of(context).size.width - 32) / 3)),
-          Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: ShimmerHelper().buildBasicShimmer(
-                  height: 120.0,
-                  width: (MediaQuery.of(context).size.width - 32) / 3)),
-          Padding(
-              padding: const EdgeInsets.only(right: 0.0),
-              child: ShimmerHelper().buildBasicShimmer(
-                  height: 120.0,
-                  width: (MediaQuery.of(context).size.width - 32) / 3)),
-        ],
+      return Container(
+        color: Colors.blue,
+        child: Row(
+          children: [
+            Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: ShimmerHelper().buildBasicShimmer(
+                    height: 120.0,
+                    width: (MediaQuery.of(context).size.width - 32) / 3)),
+            Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: ShimmerHelper().buildBasicShimmer(
+                    height: 120.0,
+                    width: (MediaQuery.of(context).size.width - 32) / 3)),
+            Padding(
+                padding: const EdgeInsets.only(right: 0.0),
+                child: ShimmerHelper().buildBasicShimmer(
+                    height: 120.0,
+                    width: (MediaQuery.of(context).size.width - 32) / 3)),
+          ],
+        ),
       );
     } else if (_featuredCategoryList.length > 0) {
       //snapshot.hasData
@@ -694,55 +697,57 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           itemCount: _featuredCategoryList.length,
           itemExtent: 120,
           itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 3),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return CategoryProducts(
-                      category_id: _featuredCategoryList[index].id,
-                      category_name: _featuredCategoryList[index].name,
-                    );
-                  }));
-                },
-                child: Card(
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  shape: RoundedRectangleBorder(
-                    side: new BorderSide(color: MyTheme.light_grey, width: 1.0),
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                  elevation: 0.0,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                          //width: 100,
-                          height: 100,
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(16),
-                                  bottom: Radius.zero),
-                              child: FadeInImage.assetNetwork(
-                                placeholder: 'assets/placeholder.png',
-                                image:
-                                    _featuredCategoryList[index].banner,
-                                fit: BoxFit.cover,
-                              ))),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(8, 8, 8, 4),
-                        child: Container(
-                          height: 32,
-                          child: Text(
-                            _featuredCategoryList[index].name,
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            style: TextStyle(
-                                fontSize: 11, color: MyTheme.font_grey),
+            return Container(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 3),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return CategoryProducts(
+                        category_id: _featuredCategoryList[index].id,
+                        category_name: _featuredCategoryList[index].name,
+                      );
+                    }));
+                  },
+                  child: Card(
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    shape: RoundedRectangleBorder(
+                      side: new BorderSide(color: MyTheme.light_grey, width: 1.0),
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
+                    elevation: 0.0,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                            //width: 100,
+                            height: 100,
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(16),
+                                    bottom: Radius.zero),
+                                child: FadeInImage.assetNetwork(
+                                  placeholder: 'assets/placeholder.png',
+                                  image:
+                                      _featuredCategoryList[index].banner,
+                                  fit: BoxFit.cover,
+                                ))),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(8, 8, 8, 4),
+                          child: Container(
+                            height: 32,
+                            child: Text(
+                              _featuredCategoryList[index].name,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: TextStyle(
+                                  fontSize: 11, color: MyTheme.font_grey),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -767,30 +772,35 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   //top category section with bigloot
   buildHomeMenuRow(BuildContext context) {
     return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
+      //scrollDirection: Axis.horizontal,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context)=>Bigzloot()));
             },
             child: Container(
-              height: 100,
-              width: MediaQuery.of(context).size.width / 5 - 4,
-              child: Column(
+             padding: EdgeInsets.all(10),
+              height: 130,
+              width: MediaQuery.of(context).size.width / 4.3,
+              decoration: BoxDecoration(
+                  //shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.white,
+                          spreadRadius: 2,
+                          blurRadius: 10
+                      )
+                    ],
+                    border:
+                    Border.all(color: MyTheme.light_grey, width: 1)),
+              child: Column( 
                 children: [
-                  Container(
-                      height: 57,
-                      width: 57,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border:
-                          Border.all(color: MyTheme.light_grey, width: 1)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Image.asset("assets/bl.png"),
-                      )),
+                    Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Image.asset("assets/bl.png"),
+                     ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
@@ -815,24 +825,30 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               }));
             },
             child: Container(
-              height: 100,
-              width: MediaQuery.of(context).size.width / 5 - 4,
+              padding: EdgeInsets.all(5),
+              height: 130,
+              width: MediaQuery.of(context).size.width / 4.3,
+              decoration: BoxDecoration(
+                //shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.white,
+                        spreadRadius: 2,
+                        blurRadius: 10
+                    )
+                  ],
+                  border:
+                  Border.all(color: MyTheme.light_grey, width: 1)),
               child: Column(
                 children: [
-                  Container(
-                      height: 57,
-                      width: 57,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border:
-                          Border.all(color: MyTheme.light_grey, width: 1)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Image.asset("assets/top_categories.png"),
-                      )),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Image.asset("assets/top_categories.png"),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
+                      //AppLocalizations.of(context).home_screen_top_categories,
                       AppLocalizations.of(context).home_screen_top_categories,
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -853,31 +869,41 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               }));
             },
             child: Container(
-              height: 100,
-              width: MediaQuery.of(context).size.width / 5 - 4,
+              padding: EdgeInsets.all(10),
+              height: 130,
+              width: MediaQuery.of(context).size.width / 4.2,
+              decoration: BoxDecoration(
+                //shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.white,
+                        spreadRadius: 2,
+                        blurRadius: 10
+                    )
+                  ],
+                  border:
+                  Border.all(color: MyTheme.light_grey, width: 1)),
               child: Column(
                 children: [
-                  Container(
-                      height: 57,
-                      width: 57,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border:
-                          Border.all(color: MyTheme.light_grey, width: 1)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Image.asset("assets/brands.png"),
-                      )),
                   Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Text(AppLocalizations.of(context).home_screen_brands,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Color.fromRGBO(132, 132, 132, 1),
-                              fontWeight: FontWeight.w300))),
+                    padding: const EdgeInsets.all(16.0),
+                    child: Image.asset("assets/brands.png"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      //AppLocalizations.of(context).home_screen_top_categories,
+                      AppLocalizations.of(context).home_screen_brands,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color.fromRGBO(132, 132, 132, 1),
+                          fontWeight: FontWeight.w300),
+                    ),
+                  )
                 ],
               ),
             ),
+
           ),
           GestureDetector(
             onTap: () {
@@ -886,28 +912,37 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               }));
             },
             child: Container(
-              height: 100,
-              width: MediaQuery.of(context).size.width / 5 - 4,
+              height: 130,
+              padding: EdgeInsets.all(10),
+              width: MediaQuery.of(context).size.width / 4.3,
+              decoration: BoxDecoration(
+                //shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.white,
+                        spreadRadius: 2,
+                        blurRadius: 10
+                    )
+                  ],
+                  border:
+                  Border.all(color: MyTheme.light_grey, width: 1)),
               child: Column(
                 children: [
-                  Container(
-                      height: 57,
-                      width: 57,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border:
-                          Border.all(color: MyTheme.light_grey, width: 1)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Image.asset("assets/top_sellers.png"),
-                      )),
                   Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Text(AppLocalizations.of(context).home_screen_top_sellers,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Color.fromRGBO(132, 132, 132, 1),
-                              fontWeight: FontWeight.w300))),
+                    padding: const EdgeInsets.all(16.0),
+                    child: Image.asset("assets/top_sellers.png"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      //AppLocalizations.of(context).home_screen_top_categories,
+                      AppLocalizations.of(context).home_screen_top_sellers,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color.fromRGBO(132, 132, 132, 1),
+                          fontWeight: FontWeight.w300),
+                    ),
+                  )
                 ],
               ),
             ),
