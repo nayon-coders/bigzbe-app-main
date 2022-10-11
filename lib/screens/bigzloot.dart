@@ -95,15 +95,17 @@ class _BigzlootState extends State<Bigzloot> {
                     itemCount: snapshot.data.length,
                       itemBuilder: (_, index){
                       print(snapshot.data[index]);
+                      var domain = "https://bigzbe.com/public"; 
                         return InkWell(
                           onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>SingleBigzloot(id: snapshot.data[index]["id"].toString(), itemIndex: index,))),
                           child: Container(
                             margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
                             padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
                             decoration: BoxDecoration(
+
                                 borderRadius: BorderRadius.circular(10),
                                 image: DecorationImage(
-                                  image: AssetImage("assets/placeholder-rect.jpg"),
+                                  image: snapshot.data[index]["banner"] != null ? NetworkImage("$domain/${snapshot.data[index]["banner"]["file_name"]}") : AssetImage("assets/placeholder-rect.jpg"),
                                   fit: BoxFit.cover,
                                 )
                             ),
@@ -136,6 +138,7 @@ class _BigzlootState extends State<Bigzloot> {
                                       width: 100,
                                       height: 100,
                                       decoration: BoxDecoration(
+                                          color: Colors.white,
                                           borderRadius: BorderRadius.circular(500),
                                           boxShadow: [
                                             BoxShadow(
@@ -146,7 +149,7 @@ class _BigzlootState extends State<Bigzloot> {
                                             ),
                                           ],
                                           image: DecorationImage(
-                                            image: AssetImage("assets/placeholder-rect.jpg"),
+                                            image: snapshot.data[index]["logo"] != null ? NetworkImage("$domain/${snapshot.data[index]["logo"]["file_name"]}") : AssetImage("assets/placeholder-rect.jpg"),
                                             fit: BoxFit.cover,
                                           )
                                       ),
@@ -154,20 +157,23 @@ class _BigzlootState extends State<Bigzloot> {
                                     ),
 
                                     SizedBox(width: 30,),
-                                    Column(
-                                      children: [
-                                        Text("${snapshot.data[index]["name"]}",
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
+                                    Container(
+                                      margin: EdgeInsets.only(top: 60),
+                                      child: Column(
+                                        children: [
+                                          Text("${snapshot.data[index]["name"]}",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        Text("${snapshot.data[index]["address"]}",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                          ),
-                                        )
-                                      ],
+                                          Text("${snapshot.data[index]["address"]}",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
 
 

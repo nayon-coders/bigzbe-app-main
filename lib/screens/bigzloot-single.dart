@@ -55,11 +55,20 @@ class _SingleBigzlootState extends State<SingleBigzloot> {
         child: FutureBuilder(
           future: FutuerBigzbeShopList,
           builder: (_, AsyncSnapshot<dynamic> snapshot){
+
+
             if(snapshot.connectionState == ConnectionState.waiting){
               return Center(
                 child: Image.asset("assets/Loading.gif", height: 50, width: 50,),
               );
             }else if(snapshot.hasData){
+              //print(snapshot.data["banner"]);
+              var domain = "https://bigzbe.com/public";
+              var schedule;
+              if(snapshot.data["schedule"] != null && snapshot.data["schedule"]["schedules"] != null){
+              schedule = snapshot.data["schedule"]["schedules"];
+              }
+
               var data = snapshot.data;
               return  SingleChildScrollView(
                 child: Column(
@@ -70,7 +79,7 @@ class _SingleBigzlootState extends State<SingleBigzloot> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
                         image: DecorationImage(
-                          image: AssetImage("assets/placeholder-rect.jpg"),
+                          image: snapshot.data["banner"] != null ? NetworkImage("$domain/${snapshot.data["banner"]["file_name"]}") : AssetImage("assets/placeholder-rect.jpg"),
                           fit:BoxFit.cover,
                         ),
                       ),
@@ -198,7 +207,7 @@ class _SingleBigzlootState extends State<SingleBigzloot> {
                           ),
 
                           SizedBox(height: 20,),
-                      Container(
+                          Container(
                         width: width,
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
@@ -223,7 +232,7 @@ class _SingleBigzlootState extends State<SingleBigzloot> {
                           ],
                         ),
                       ), SizedBox(height: 20,),
-                          Container(
+                          snapshot.data["schedule"] != null && snapshot.data["schedule"]["schedules"] != null? Container(
                             width: width,
                             height: 500,
                             padding: EdgeInsets.all(10),
@@ -231,91 +240,53 @@ class _SingleBigzlootState extends State<SingleBigzloot> {
                               borderRadius: BorderRadius.circular(5),
                               //color: Colors.white,
                             ),
-                            child: ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                             itemCount: BigzlootJson.bigzlootTime[widget.itemIndex].length,
-                              itemBuilder: (_, index){
-                                var data =  BigzlootJson.bigzlootTime[widget.itemIndex][index];
-                                print(data);
-                               return Row(
-                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                 children: [
-                                   Container(
-                                     width: 50,
-                                     height: 50,
-                                     margin: EdgeInsets.only(bottom: 10),
-                                     decoration: BoxDecoration(
-                                       borderRadius: BorderRadius.circular(100),
-                                       color: Colors.blue,
-                                     ),
-                                     child: Center(
-                                       child: Text("${data["day"]}",
-                                         style: TextStyle(
-                                           color: Colors.white,
-                                         ),
-                                       ),
-                                     ),
-                                   ),
-                                   Container(
-                                     width: 100,
-                                     height: 50,
-                                     padding: EdgeInsets.all(10),
-                                     decoration: BoxDecoration(
-                                       borderRadius: BorderRadius.circular(5),
-                                       color: Colors.white,
-                                       boxShadow: [
-                                         BoxShadow(
-                                             spreadRadius: 1,
-                                             blurRadius: 10,
-                                             offset: Offset(0,2),
-                                             color: Colors.grey.shade200
-                                         )
-                                       ],
-                                     ),
-                                     child: Center(
-                                       child: Text(
-                                         "${data["open"]}",
-                                         style: TextStyle(
-                                             fontSize: 15,
-                                             fontWeight: FontWeight.w600
-                                         ),
-                                       ),
-                                     ),
-                                   ),
-                                   Icon(
-                                     Icons.remove,
-                                   ),
-                                   Container(
-                                     width: 100,
-                                     height: 50,
-                                     padding: EdgeInsets.all(10),
-                                     decoration: BoxDecoration(
-                                       borderRadius: BorderRadius.circular(5),
-                                       color: Colors.white,
-                                       boxShadow: [
-                                         BoxShadow(
-                                             spreadRadius: 1,
-                                             blurRadius: 10,
-                                             offset: Offset(0,2),
-                                             color: Colors.grey.shade200
-                                         )
-                                       ],
-                                     ),
-                                     child: Center(
-                                       child: Text(
-                                         "${data["close"]}",
-                                         style: TextStyle(
-                                             fontSize: 15,
-                                             fontWeight: FontWeight.w600
-                                         ),
-                                       ),
-                                     ),
-                                   ),
-                                 ],
-                               );
-                              },
+                            child:  Column(
+                              children: [
+                                buildScheduleList(
+                                    schedule,
+                                  "Mon",
+                                  "${schedule["monday"]["open"] != null ? schedule["monday"]["open"]+' AM' : '---'}",
+                                  "${schedule["monday"]["close"] != null ? schedule["monday"]["close"]+' PM' : '-----'}",
+                                ),
+                                buildScheduleList(
+                                  schedule,
+                                  "Tue",
+                                  "${schedule["tuesday"]["open"] != null ? schedule["tuesday"]["open"]+' AM' : '---'}",
+                                  "${schedule["tuesday"]["close"] != null ? schedule["tuesday"]["close"]+' PM' : '-----'}",
+                                ),
+                                buildScheduleList(
+                                  schedule,
+                                  "Wed",
+                                  "${schedule["wednesday"]["open"] != null ? schedule["wednesday"]["open"]+' AM' : '---'}",
+                                  "${schedule["wednesday"]["close"] != null ? schedule["wednesday"]["close"]+' PM' : '-----'}",
+                                ),
+                                buildScheduleList(
+                                  schedule,
+                                  "Thu",
+                                  "${schedule["thursday"]["open"] != null ? schedule["thursday"]["open"]+' AM' : '---'}",
+                                  "${schedule["thursday"]["close"] != null ? schedule["thursday"]["close"]+' PM' : '-----'}",
+                                ),
+                                buildScheduleList(
+                                  schedule,
+                                  "Fri",
+                                  "${schedule["friday"]["open"] != null ? schedule["friday"]["open"]+' AM' : '---'}",
+                                  "${schedule["friday"]["close"] != null ? schedule["friday"]["close"]+' PM' : '-----'}",
+                                ),
+                                buildScheduleList(
+                                  schedule,
+                                  "Sat",
+                                  "${schedule["saturday"]["open"] != null ? schedule["saturday"]["open"]+' AM' : '---'}",
+                                  "${schedule["saturday"]["close"] != null ? schedule["saturday"]["close"]+' PM' : '-----'}",
+                                ),
+                                buildScheduleList(
+                                  schedule,
+                                  "Sun",
+                                  "${schedule["sunday"]["open"] != null ? schedule["sunday"]["open"]+' AM' : '---'}",
+                                  "${schedule["sunday"]["close"] != null ? schedule["sunday"]["close"]+' PM' : '-----'}",
+                                ),
+                              ],
                             ),
-                          )
+                          ) : Container(),
                         ],
                       ),
                     )
@@ -324,12 +295,7 @@ class _SingleBigzlootState extends State<SingleBigzloot> {
               );
             }else{
               return Center(
-                child: Column(
-                  children: [
-                    Image.asset("assets/Loading.gif", height: 50, width: 50,),
-                    Text("Something went wearing, Trying to reconnect")
-                  ],
-                ),
+                child: Text("No Data Found"),
               );
             }
           }
@@ -338,6 +304,85 @@ class _SingleBigzlootState extends State<SingleBigzloot> {
 
       ),
 
+    );
+  }
+
+  Row buildScheduleList(schedule, day, open, close) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          width: 50,
+          height: 50,
+          margin: EdgeInsets.only(bottom: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+            color: Colors.blue,
+          ),
+          child: Center(
+            child: Text("$day",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+        Container(
+          width: 100,
+          height: 50,
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                  spreadRadius: 1,
+                  blurRadius: 10,
+                  offset: Offset(0,2),
+                  color: Colors.grey.shade200
+              )
+            ],
+          ),
+          child: Center(
+            child: Text(
+              open,
+              style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600
+              ),
+            ),
+          ),
+        ),
+        Icon(
+          Icons.remove,
+        ),
+        Container(
+          width: 100,
+          height: 50,
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                  spreadRadius: 1,
+                  blurRadius: 10,
+                  offset: Offset(0,2),
+                  color: Colors.grey.shade200
+              )
+            ],
+          ),
+          child: Center(
+            child: Text(
+              close,
+              style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
