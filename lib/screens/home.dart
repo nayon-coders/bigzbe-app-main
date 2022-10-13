@@ -923,10 +923,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               child: Column( 
                 children: [
                     Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Image.asset("assets/bl.png"),
+                    padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 5, top: 16),
+                    child: Image.asset("assets/bl.png",),
                      ),
-                  Padding(
+                  Padding( 
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
                       //AppLocalizations.of(context).home_screen_top_categories,
@@ -968,7 +968,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 5, top: 16),
                     child: Image.asset("assets/top_categories.png"),
                   ),
                   Padding(
@@ -1013,7 +1013,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 5, top: 16),
                     child: Image.asset("assets/brands.png"),
                   ),
                   Padding(
@@ -1057,7 +1057,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 5, top: 16),
                     child: Image.asset("assets/top_sellers.png"),
                   ),
                   Padding(

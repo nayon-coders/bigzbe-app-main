@@ -12,6 +12,7 @@ import 'package:active_ecommerce_flutter/screens/registration.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/password_forget.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:toast/toast.dart';
 import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
 import 'package:active_ecommerce_flutter/helpers/auth_helper.dart';
@@ -155,6 +156,17 @@ class _LoginState extends State<Login> {
       print(facebookLogin.message);
     }
   }
+  appleSignIn() async{
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+        AppleIDAuthorizationScopes.values
+      ],
+    );
+
+    print("Apple user ========= $credential");
+  }
 
   onPressedGoogleLogin() async {
     try {
@@ -224,6 +236,8 @@ class _LoginState extends State<Login> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     final _screen_height = MediaQuery.of(context).size.height;
@@ -245,6 +259,7 @@ class _LoginState extends State<Login> {
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+
                   Padding(
                     padding: const EdgeInsets.only(top: 40.0, bottom: 25),
                     child: Container(
@@ -501,6 +516,7 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                         ),
+
                         Visibility(
                           visible:
                           allow_google_login.$ || allow_facebook_login.$,
@@ -515,6 +531,7 @@ class _LoginState extends State<Login> {
                             )),
                           ),
                         ),
+
                         Padding(
                           padding: const EdgeInsets.only(top: 30.0),
                           child: Center(
@@ -524,6 +541,17 @@ class _LoginState extends State<Login> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
+                                  Visibility(
+                                    visible: allow_google_login.$,
+                                    child: InkWell(
+                                      onTap: ()=> appleSignIn(),
+                                       child: Container(
+                                        width: 28,
+                                        child: Image.asset(
+                                            "assets/iphone.png"),
+                                      ),
+                                    ),
+                                  ),
                                   Visibility(
                                     visible: allow_google_login.$,
                                     child: InkWell(
@@ -579,4 +607,6 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+
+
 }
