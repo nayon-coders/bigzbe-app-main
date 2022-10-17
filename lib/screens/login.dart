@@ -1,4 +1,5 @@
 import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/helpers/auth_service.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/other_config.dart';
 import 'package:active_ecommerce_flutter/social_config.dart';
@@ -12,7 +13,9 @@ import 'package:active_ecommerce_flutter/screens/registration.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/password_forget.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:provider/provider.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:the_apple_sign_in/scope.dart';
 import 'package:toast/toast.dart';
 import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
 import 'package:active_ecommerce_flutter/helpers/auth_helper.dart';
@@ -23,6 +26,7 @@ import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:twitter_login/twitter_login.dart';
+
 
 class Login extends StatefulWidget {
   @override
@@ -156,17 +160,48 @@ class _LoginState extends State<Login> {
       print(facebookLogin.message);
     }
   }
-  appleSignIn() async{
-    final credential = await SignInWithApple.getAppleIDCredential(
-      scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-        AppleIDAuthorizationScopes.values
-      ],
-    );
+  Future<void> appleSignIn(BuildContext context) async {
+    try {
+      final authService = Provider.of<AuthService>(context, listen: false);
+      final user = await authService.signInWithApple(
+          scopes: [Scope.email, Scope.fullName]);
+      print('uid: ${user.uid}');
 
-    print("Apple user ========= $credential");
+      String accessToken = user.refreshToken;
+
+      var loginResponse = await AuthRepository().getSocialLoginResponse(
+          "apple", user.displayName, user.email, user.uid,
+          access_token: accessToken);
+
+      if (loginResponse.result == false) {
+        ToastComponent.showDialog(loginResponse.message, context,
+            gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+      } else {
+        print("Apple Login success");
+        ToastComponent.showDialog(loginResponse.message, context,
+            gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+        AuthHelper().setUserData(loginResponse);
+
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return Main();
+        }));
+      }
+
+    } catch (e) {
+      // TODO: Show alert here
+      print(e);
+    }
   }
+  // appleSignIn() async{
+  //   final credential = await SignInWithApple.getAppleIDCredential(
+  //     scopes: [
+  //       AppleIDAuthorizationScopes.email,
+  //       AppleIDAuthorizationScopes.fullName,
+  //     ],
+  //   );
+  //
+  //   print("Apple user ========= $credential");
+  // }
 
   onPressedGoogleLogin() async {
     try {
@@ -544,7 +579,7 @@ class _LoginState extends State<Login> {
                                   Visibility(
                                     visible: allow_google_login.$,
                                     child: InkWell(
-                                      onTap: ()=> appleSignIn(),
+                                      onTap: ()=> appleSignIn(context),
                                        child: Container(
                                         width: 28,
                                         child: Image.asset(

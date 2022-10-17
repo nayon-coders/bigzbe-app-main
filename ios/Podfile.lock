@@ -16,11 +16,18 @@ PODS:
   - FBSDKCoreKit_Basics (12.1.0)
   - FBSDKLoginKit (12.1.0):
     - FBSDKCoreKit (= 12.1.0)
+  - Firebase/Auth (8.9.0):
+    - Firebase/CoreOnly
+    - FirebaseAuth (~> 8.9.0)
   - Firebase/CoreOnly (8.9.0):
     - FirebaseCore (= 8.9.0)
   - Firebase/Messaging (8.9.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 8.9.0)
+  - firebase_auth (3.3.8):
+    - Firebase/Auth (= 8.9.0)
+    - firebase_core
+    - Flutter
   - firebase_core (1.10.6):
     - Firebase/CoreOnly (= 8.9.0)
     - Flutter
@@ -28,6 +35,11 @@ PODS:
     - Firebase/Messaging (= 8.9.0)
     - firebase_core
     - Flutter
+  - FirebaseAuth (8.9.0):
+    - FirebaseCore (~> 8.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.6)
+    - GoogleUtilities/Environment (~> 7.6)
+    - GTMSessionFetcher/Core (~> 1.5)
   - FirebaseCore (8.9.0):
     - FirebaseCoreDiagnostics (~> 8.0)
     - GoogleUtilities/Environment (~> 7.6)
@@ -139,6 +151,8 @@ PODS:
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
+  - the_apple_sign_in (1.0.0):
+    - Flutter
   - twitter_login (0.0.1):
     - Flutter
   - url_launcher (0.0.1):
@@ -152,6 +166,7 @@ PODS:
 
 DEPENDENCIES:
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
+  - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
@@ -172,6 +187,7 @@ DEPENDENCIES:
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
   - social_share (from `.symlinks/plugins/social_share/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - the_apple_sign_in (from `.symlinks/plugins/the_apple_sign_in/ios`)
   - twitter_login (from `.symlinks/plugins/twitter_login/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
@@ -186,6 +202,7 @@ SPEC REPOS:
     - FBSDKCoreKit_Basics
     - FBSDKLoginKit
     - Firebase
+    - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseInstallations
@@ -205,6 +222,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   connectivity:
     :path: ".symlinks/plugins/connectivity/ios"
+  firebase_auth:
+    :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_messaging:
@@ -245,6 +264,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/social_share/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
+  the_apple_sign_in:
+    :path: ".symlinks/plugins/the_apple_sign_in/ios"
   twitter_login:
     :path: ".symlinks/plugins/twitter_login/ios"
   url_launcher:
@@ -264,8 +285,10 @@ SPEC CHECKSUMS:
   FBSDKCoreKit_Basics: 39865aff97e5f6951a78fb3e89dc4460e35e1895
   FBSDKLoginKit: e993f97c7cc794c5da4056d8aec3c3d66033a727
   Firebase: 13d8d96499e2635428d5bf0ec675df21f95d9a95
+  firebase_auth: f2808c5aaa9f2e97b9b11ddf644b2e3624dbbdc2
   firebase_core: c263d7daf1dc92fcd9895e6abdc04872b0ee07ff
   firebase_messaging: 51b1029537c74503e935e4ccb221da8be8cbf26e
+  FirebaseAuth: 2b78b2a32c07b3ecfa4970bdf1d3632b8304099b
   FirebaseCore: 599ee609343eaf4941bd188f85e3aa077ffe325b
   FirebaseCoreDiagnostics: 92e07a649aeb66352b319d43bdd2ee3942af84cb
   FirebaseInstallations: 40bd9054049b2eae9a2c38ef1c3dd213df3605cd
@@ -299,12 +322,13 @@ SPEC CHECKSUMS:
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   social_share: 702a5e3842addd22db515aa9e1e00a4b80a0296d
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  the_apple_sign_in: 2e78c83cdb09eba07bb16dcc1f3bc12fcdc8263d
   twitter_login: 2794db69b7640681171b17b3c2c84ad9dfb4a57f
   url_launcher: b6e016d912f04be9f5bf6e8e82dc599b7ba59649
   video_player: ecd305f42e9044793efd34846e1ce64c31ea6fcb
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   webview_flutter_wkwebview: 44aa025fbcf6730d808f1e0d86a5af5ac25fa8de
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: 4e8f8b2be68aeea4c0d5beb6ff1e79fface1d048
 
 COCOAPODS: 1.11.3
